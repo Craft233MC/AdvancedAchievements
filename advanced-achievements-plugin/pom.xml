@@ -35,7 +35,7 @@
 					<execution>
 						<configuration>
 							<finalName>AdvancedAchievements</finalName>
-							<minimizeJar>true</minimizeJar>
+							<minimizeJar>false</minimizeJar>
 							<filters>
 								<filter>
 									<artifact>com.hm.achievement:advanced-achievements-api</artifact>
@@ -64,6 +64,10 @@
 								<relocation>
 									<pattern>dagger</pattern>
 									<shadedPattern>com.hm.dagger</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.tcoded.folialib</pattern>
+									<shadedPattern>com.hm.folialib</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>
@@ -140,15 +144,10 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-
-		<!-- Test dependencies -->
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-junit-jupiter</artifactId>
+			<groupId>com.github.technicallycoded</groupId>
+			<artifactId>FoliaLib</artifactId>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

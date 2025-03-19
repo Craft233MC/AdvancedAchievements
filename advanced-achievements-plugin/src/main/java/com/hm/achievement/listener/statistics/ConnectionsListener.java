@@ -62,11 +62,11 @@ public class ConnectionsListener extends AbstractListener {
 	 * @param player
 	 */
 	private void scheduleAwardConnection(Player player) {
-		Bukkit.getScheduler().runTaskAsynchronously(advancedAchievements, () -> {
+		AdvancedAchievements.getFoliaLib().getScheduler().runAsync(wrappedTask -> {
 			ConnectionInformation connectionInformation = databaseManager.getConnectionInformation(player.getUniqueId());
 			if (!ConnectionInformation.today().equals(connectionInformation.getDate())) {
 				// Switch to main server thread as Bukkit APIs aren't thread-safe and shouldn't be used in async tasks.
-				Bukkit.getScheduler().scheduleSyncDelayedTask(advancedAchievements, () -> {
+				AdvancedAchievements.getFoliaLib().getScheduler().runLater(() -> {
 					if (player.isOnline() && shouldIncreaseBeTakenIntoAccount(player, category)) {
 						long updatedConnectionCount = connectionInformation.getCount() + 1;
 						databaseManager.updateConnectionInformation(player.getUniqueId(), updatedConnectionCount);

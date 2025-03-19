@@ -98,7 +98,7 @@ public class CacheManager implements Cleanable {
 			CachedStatistic statistic = entry.getValue();
 			if (statistic.didPlayerDisconnect() && statistic.isDatabaseConsistent()) {
 				// Player was disconnected at some point in the recent past delegate cleaning to the main server thread.
-				Bukkit.getScheduler().callSyncMethod(advancedAchievements, () -> {
+				advancedAchievements.getFoliaLib().getScheduler().runNextTick(wrappedTask -> {
 					// Check again whether statistic has been written to the database. This is necessary to cover
 					// cases where the player may have reconnected in the meantime.
 					if (statistic.isDatabaseConsistent()) {
@@ -106,7 +106,6 @@ public class CacheManager implements Cleanable {
 					} else if (Bukkit.getPlayer(uuid) != null) {
 						statistic.resetDisconnection();
 					}
-					return null;
 				});
 			}
 		}

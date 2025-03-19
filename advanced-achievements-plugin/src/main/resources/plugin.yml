@@ -5,6 +5,7 @@ author: LucidAPs
 soft depend: [Vault,PetMaster,Essentials,PlaceholderAPI,Jobs]
 description: Advanced Achievements enables unique and challenging achievements. Try to collect as many as you can, earn rewards, climb the rankings and receive RP books!
 api-version: 1.17
+folia-supported: true
 commands:
   aach:
     description: Main Advanced Achievements command, use it to list sub-commands.

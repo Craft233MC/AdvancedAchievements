@@ -237,8 +237,8 @@ public class PlayerAdvancedAchievementListener implements Listener, Reloadable {
 			String message = StringUtils.replaceOnce(langBossBarProgress, "AMOUNT", receivedAmount + "/" + totalAmount);
 			BossBar bossBar = Bukkit.getServer().createBossBar(message, barColor, BarStyle.SOLID);
 			bossBar.setProgress(progress);
-			Bukkit.getScheduler().scheduleSyncDelayedTask(advancedAchievements, () -> bossBar.addPlayer(player), 110);
-			Bukkit.getScheduler().scheduleSyncDelayedTask(advancedAchievements, () -> bossBar.removePlayer(player), 240);
+			AdvancedAchievements.getFoliaLib().getScheduler().runLater(() -> bossBar.addPlayer(player), 110);
+			AdvancedAchievements.getFoliaLib().getScheduler().runLater(() -> bossBar.removePlayer(player), 240);
 		}
 	}
 

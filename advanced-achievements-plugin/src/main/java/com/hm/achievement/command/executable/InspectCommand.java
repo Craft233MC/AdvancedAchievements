@@ -85,7 +85,7 @@ public class InspectCommand extends AbstractCommand {
 		}
 		int page = getPage(args);
 
-		advancedAchievements.getServer().getScheduler().runTaskAsynchronously(advancedAchievements, () -> {
+		AdvancedAchievements.getFoliaLib().getScheduler().runAsync(wrappedTask -> {
 			// Cleaning the cache & caching desired pagination
 			cleanUpCache();
 			checkAndCache(achievement.getName());

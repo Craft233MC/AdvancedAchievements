@@ -49,8 +49,8 @@ public class JoinListener implements Listener {
 	 * @param player
 	 */
 	private void scheduleReceivedCacheLoad(Player player) {
-		Bukkit.getScheduler().runTaskAsynchronously(advancedAchievements,
-				() -> cacheManager.getPlayerAchievements(player.getUniqueId()));
+		AdvancedAchievements.getFoliaLib().getScheduler().runAsync(
+				wrappedTask -> cacheManager.getPlayerAchievements(player.getUniqueId()));
 
 	}
 
@@ -62,7 +62,7 @@ public class JoinListener implements Listener {
 	 * @param player
 	 */
 	private void scheduleAwardAdvancements(Player player) {
-		Bukkit.getScheduler().scheduleSyncDelayedTask(advancedAchievements, () -> {
+		AdvancedAchievements.getFoliaLib().getScheduler().runLater(() -> {
 			// Check that the player is still connected.
 			if (!player.isOnline()) {
 				return;

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -15,7 +16,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.hm.achievement.AdvancedAchievements;
 import com.hm.achievement.category.Category;
@@ -80,10 +80,10 @@ public class PluginLoader {
 	private final Cleaner cleaner;
 
 	// Bukkit scheduler tasks.
-	private BukkitTask asyncCachedRequestsSenderTask;
-	private BukkitTask playedTimeTask;
-	private BukkitTask distanceTask;
-	private BukkitTask cleanerTask;
+	private WrappedTask asyncCachedRequestsSenderTask;
+	private WrappedTask playedTimeTask;
+	private WrappedTask distanceTask;
+	private WrappedTask cleanerTask;
 
 	@Inject
 	public PluginLoader(AdvancedAchievements advancedAchievements, Logger logger, Set<Reloadable> reloadables,
@@ -202,13 +202,16 @@ public class PluginLoader {
 		// Schedule a repeating task to group database queries when statistics are modified.
 		if (asyncCachedRequestsSenderTask == null) {
 			long taskPeriod = mainConfig.getBoolean("BungeeMode") ? 40L : 1200L;
-			asyncCachedRequestsSenderTask = Bukkit.getScheduler().runTaskTimerAsynchronously(advancedAchievements,
-					asyncCachedRequestsSender, taskPeriod, taskPeriod);
+			asyncCachedRequestsSenderTask = AdvancedAchievements.getFoliaLib().getScheduler().runTimerAsync(
+					asyncCachedRequestsSender,
+					taskPeriod,
+					taskPeriod
+			);
 		}
 
 		if (cleanerTask == null) {
 			long taskPeriod = mainConfig.getBoolean("BungeeMode") ? 50L : 20000L;
-			cleanerTask = Bukkit.getScheduler().runTaskTimer(advancedAchievements, cleaner, taskPeriod, taskPeriod);
+			cleanerTask = AdvancedAchievements.getFoliaLib().getScheduler().runTimer(cleaner, taskPeriod, taskPeriod);
 		}
 
 		// Schedule a repeating task to monitor played time for each player (not directly related to an event).
@@ -217,7 +220,7 @@ public class PluginLoader {
 		}
 		if (!disabledCategories.contains(NormalAchievements.PLAYEDTIME)) {
 			int configPlaytimeTaskInterval = mainConfig.getInt("PlaytimeTaskInterval");
-			playedTimeTask = Bukkit.getScheduler().runTaskTimer(advancedAchievements, playTimeRunnable,
+			playedTimeTask = AdvancedAchievements.getFoliaLib().getScheduler().runTimer(playTimeRunnable,
 					configPlaytimeTaskInterval * 10L, configPlaytimeTaskInterval * 20L);
 		}
 
@@ -234,7 +237,7 @@ public class PluginLoader {
 				|| !disabledCategories.contains(NormalAchievements.DISTANCELLAMA)
 				|| !disabledCategories.contains(NormalAchievements.DISTANCESNEAKING)) {
 			int configDistanceTaskInterval = mainConfig.getInt("DistanceTaskInterval");
-			distanceTask = Bukkit.getScheduler().runTaskTimer(advancedAchievements, distanceRunnable,
+			distanceTask = AdvancedAchievements.getFoliaLib().getScheduler().runTimer(distanceRunnable,
 					configDistanceTaskInterval * 40L, configDistanceTaskInterval * 20L);
 		}
 	}

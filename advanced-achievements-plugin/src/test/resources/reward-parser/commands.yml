@@ -1,8 +1,0 @@
-Reward:
-  Commands:
-    Display: 
-      - 'display 1'
-      - 'display 2'
-    Execute:
-      - 'execute 1'
-      - 'execute 2'

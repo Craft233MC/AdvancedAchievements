@@ -1,4 +1,0 @@
-Reward:
-  Command:
-    Display: 'teleportation to somewhere special!'
-    Execute: 'teleport PLAYER'

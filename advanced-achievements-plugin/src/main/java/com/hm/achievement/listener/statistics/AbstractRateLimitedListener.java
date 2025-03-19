@@ -99,7 +99,7 @@ public class AbstractRateLimitedListener extends AbstractListener implements Cle
 			if (configCooldownActionBar) {
 				if (category == NormalAchievements.MUSICDISCS) {
 					// Display message with a delay to avoid it being overwritten by disc name message.
-					Bukkit.getScheduler().scheduleSyncDelayedTask(advancedAchievements,
+					AdvancedAchievements.getFoliaLib().getScheduler().runLater(
 							() -> displayActionBarMessage(player, timeToWait), 20);
 				} else {
 					displayActionBarMessage(player, timeToWait);
