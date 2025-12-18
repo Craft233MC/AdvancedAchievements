@@ -299,17 +299,19 @@ public class PlayerAdvancedAchievementListener implements Listener, Reloadable {
 	private void displayFirework(Player player) {
 		// Set firework to launch beneath player.
 		Location location = player.getLocation().subtract(0, 1, 0);
-		Firework firework = player.getWorld().spawn(location, Firework.class);
-		FireworkMeta fireworkMeta = firework.getFireworkMeta();
-		FireworkEffect fireworkEffect = FireworkEffect.builder()
-				.withColor(configColor)
-				.withFade(mixColor)
-				.with(getFireworkType())
-				.build();
-		fireworkMeta.addEffects(fireworkEffect);
-		firework.setFireworkMeta(fireworkMeta);
-		firework.setMetadata(ADVANCED_ACHIEVEMENTS_FIREWORK, new FixedMetadataValue(advancedAchievements, true));
-		firework.setVelocity(location.getDirection().multiply(0));
+		AdvancedAchievements.getFoliaLib().getScheduler().runAtLocation(location, wrappedTask -> {
+            Firework firework = player.getWorld().spawn(location, Firework.class);
+            FireworkMeta fireworkMeta = firework.getFireworkMeta();
+            FireworkEffect fireworkEffect = FireworkEffect.builder()
+                    .withColor(configColor)
+                    .withFade(mixColor)
+                    .with(getFireworkType())
+                    .build();
+            fireworkMeta.addEffects(fireworkEffect);
+            firework.setFireworkMeta(fireworkMeta);
+            firework.setMetadata(ADVANCED_ACHIEVEMENTS_FIREWORK, new FixedMetadataValue(advancedAchievements, true));
+            firework.setVelocity(location.getDirection().multiply(0));
+        });
 	}
 
 	/**
@@ -343,13 +345,15 @@ public class PlayerAdvancedAchievementListener implements Listener, Reloadable {
 	 * @param player
 	 */
 	private void handleAllAchievementsReceived(Player player) {
-		List<Reward> rewards = rewardParser.parseRewards("AllAchievementsReceivedRewards");
-		rewards.forEach(r -> r.getRewarder().accept(player));
-		player.sendMessage(langAllAchievementsReceived);
-		rewards.stream()
-				.map(Reward::getChatTexts)
-				.flatMap(List::stream)
-				.map(m -> StringHelper.replacePlayerPlaceholders(m, player))
-				.forEach(t -> player.sendMessage(pluginHeader + ChatColor.translateAlternateColorCodes('&', t)));
+		AdvancedAchievements.getFoliaLib().getScheduler().runAtEntity(player, wrappedTask -> {
+            List<Reward> rewards = rewardParser.parseRewards("AllAchievementsReceivedRewards");
+            rewards.forEach(r -> r.getRewarder().accept(player));
+            player.sendMessage(langAllAchievementsReceived);
+            rewards.stream()
+                    .map(Reward::getChatTexts)
+                    .flatMap(List::stream)
+                    .map(m -> StringHelper.replacePlayerPlaceholders(m, player))
+                    .forEach(t -> player.sendMessage(pluginHeader + ChatColor.translateAlternateColorCodes('&', t)));
+        });
 	}
 }
