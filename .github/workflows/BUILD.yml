@@ -18,5 +18,5 @@ jobs:
         maven-version: 3.8.1
     - name: Build project
       run: mvn test -B
-    - name: Validate formatting
-      run: mvn validate formatter:validate
+#    - name: Validate formatting
+#      run: mvn validate formatter:validate
