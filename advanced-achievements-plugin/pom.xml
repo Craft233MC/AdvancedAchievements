@@ -145,7 +145,7 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.github.technicallycoded</groupId>
+			<groupId>com.tcoded</groupId>
 			<artifactId>FoliaLib</artifactId>
 			<scope>compile</scope>
 		</dependency>
